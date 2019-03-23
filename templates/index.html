@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Temperature list of different Capital</h1>
+<button id="ajaxBtn">Click</button>
+<ol id="temp">
+    {% for temperature in temperatures %}
+    <li>{{temperature['capital']}}--{{temperature['time']}}--{{temperature['fahrenheit']}}--{{temperature['celsius']}}</li>
+    {% endfor %}
+</ol>
+</body>
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    console.log('hello world')
+    function ajaxCall(){
+        $.ajax({
+            url: '/ajaxCall',
+            type: 'GET',
+            success: function(response) {
+                var x = ''
+                var temperatures = JSON.parse(response)
+                console.log(temperatures.length);
+                var ol = document.getElementById('temp')
+                for(var k in temperatures){
+                    x=x+"<li>"+temperatures[k].capital+" "
+                        +temperatures[k].time+" "+
+                        temperatures[k].fahrenheit+" "+
+                        temperatures[k].celsius+" "+"</li>"
+                }
+                ol.innerHTML = ''
+                ol.innerHTML = x
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    $('#ajaxBtn').click(function(){
+        ajaxCall()
+    });
+    setInterval(ajaxCall, 60000)
+    function hei(){
+        console.log('hei')
+    }
+
+</script>
+</html>
